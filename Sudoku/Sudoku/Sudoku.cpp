@@ -39,19 +39,16 @@ void Sudoku::UpdatePotentialMatrix() {
 				continue;
 			}
 			for (int k = 0; k < N; k++) {
-				if (sudoku_matrix[i][k] != 0) {
+				if (sudoku_matrix[i][k] != 0)
 					potential_matrix[i][j][sudoku_matrix[i][k] - 1] = false;
-				}
-				if (sudoku_matrix[k][j] != 0) {
+				if (sudoku_matrix[k][j] != 0)
 					potential_matrix[i][j][sudoku_matrix[k][j] - 1] = false;
-				}
 			}
 
 			for (int m = i / M * M; m < i / M * M + M; m++) {
 				for (int n = j / M * M; n < j / M * M + M; n++) {
-					if (sudoku_matrix[m][n] != 0) {
+					if (sudoku_matrix[m][n] != 0)
 						potential_matrix[i][j][sudoku_matrix[m][n] - 1] = false;
-					}
 				}
 			}
 		}
