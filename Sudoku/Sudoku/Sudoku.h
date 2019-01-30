@@ -15,6 +15,8 @@ private:
 	bool confirm_matrix[N][N];
 	void InitSoduku(int matrix[N][N]);
 	void UpdatePotentialMatrix();
+	void AddSudokuMatrix(int x, int y, int value);
+	void DeleteSudokuMatrix(int x, int y);
 	void GetNextPos(int &x, int &y);
 	void SudokuDFS(int x, int y, int value, int step);
 };

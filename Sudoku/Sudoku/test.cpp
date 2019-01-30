@@ -30,8 +30,8 @@ int main() {
 	s.Solve();
 	finish = clock();
 	double totaltime = (double)(finish - start) / CLOCKS_PER_SEC;
-	cout << "\n递归次数为" << s.recursion_num << endl;
-	cout << "\n此程序的运行时间为" << totaltime << "秒！" << endl;
+	cout << "递归次数为" << s.recursion_num << endl;
+	cout << "此程序的运行时间为" << totaltime << "秒！" << endl;
 	system("pause");
 	return 0;
 }

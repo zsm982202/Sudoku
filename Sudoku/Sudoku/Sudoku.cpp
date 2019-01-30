@@ -1,5 +1,6 @@
 #include "Sudoku.h"
 #include <iostream>
+#include "windows.h"
 using namespace std;
 
 Sudoku::Sudoku(int matrix[N][N]) {
@@ -86,12 +87,50 @@ void Sudoku::GetNextPos(int &x, int &y) {
 	y = index_y;
 }
 
+void Sudoku::AddSudokuMatrix(int x, int y, int value) {
+	confirm_matrix[x][y] = true;
+	sudoku_matrix[x][y] = value;
+	for (int k = 0; k < N; k++) {
+		if (k != value - 1)
+			potential_matrix[x][y][k] = false;
+	}
+	potential_num_matrix[x][y] = 1;
+
+	for (int k = 0; k < N; k++) {
+		if (!confirm_matrix[x][k] && k != y) {
+			if (potential_matrix[x][k][value - 1])
+				potential_num_matrix[x][k]--;
+			potential_matrix[x][k][value - 1] = false;
+		}
+		if (!confirm_matrix[k][y] && x != k) {
+			if (potential_matrix[k][y][value - 1])
+				potential_num_matrix[k][y]--;
+			potential_matrix[k][y][value - 1] = false;
+		}
+	}
+
+	for (int m = x / M * M; m < x / M * M + M; m++) {
+		for (int n = y / M * M; n < y / M * M + M; n++) {
+			if (!confirm_matrix[m][n] && !(m == x && n == y)) {
+				if (potential_matrix[m][n][value - 1])
+					potential_num_matrix[m][n]--;
+				potential_matrix[m][n][value - 1] = false;
+			}
+		}
+	}
+}
+
+void Sudoku::DeleteSudokuMatrix(int x, int y) {
+	int delete_value = sudoku_matrix[x][y];
+	confirm_matrix[x][y] = false;
+	sudoku_matrix[x][y] = 0;
+	UpdatePotentialMatrix();
+}
+
 void Sudoku::SudokuDFS(int x, int y, int value, int step) {
 	recursion_num++;
 	step++;
-	confirm_matrix[x][y] = true;
-	sudoku_matrix[x][y] = value;
-	UpdatePotentialMatrix();
+	AddSudokuMatrix(x, y, value);
 	if (step == N * N) {
 		Print();
 	}
@@ -103,10 +142,9 @@ void Sudoku::SudokuDFS(int x, int y, int value, int step) {
 				SudokuDFS(next_x, next_y, k + 1, step);
 		}
 	}
-	confirm_matrix[x][y] = false;
-	sudoku_matrix[x][y] = 0;
-	UpdatePotentialMatrix();
 	step--;
+	DeleteSudokuMatrix(x, y);
+	
 }
 
 void Sudoku::Solve() {
@@ -140,4 +178,5 @@ void Sudoku::Print() {
 		}
 		cout << endl;
 	}
+	cout << endl;
 }
